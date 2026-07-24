@@ -1,4 +1,4 @@
-## BookMate: AI-Powered Book Recommendation System
+## 🕮 BookMate: AI-Powered Book Recommendation System
 BookMate is an AI-powered book recommendation system and it recommends books using hybrid approach that involves Content-Based Filtering, and Collaborative Filtering. The application was develeoped using streamlit and an SQLite database that offers more than just recommendtaion and includes multiple module such as login,Home, Genres catalog, recomendations page and shelves for users.
 
 Feautures:
@@ -16,16 +16,11 @@ Feautures:
   - Favorites
 - Profile Logout
 
-##Built With:
-- Python
-- Streamlit
-- SQLite
-- Pandas
-- NumPy
-- Scikit-learn
-- NLTK
+## Built With:
+- Python, Streamlit, SQLite,Pandas, NumPy, Scikit-learn, NLTK
+- Visual Studio Code and Google Colab
 
-Download Model Files
+## Download Model Files
 
 The saved model files and datasets are stored in google drive as they exceed GitHub's file size limits.
 
@@ -50,6 +45,9 @@ The project uses publicly available dataset called bestbooksever and goodbooks u
 
 ![Ratings Dataset](docs/screenshots/gb_ratings.png)
 
+## Project structure
+
+![project structure](docs/screenshots/structure.png)
 
 ## Installation
 
@@ -75,27 +73,15 @@ streamlit run app.py
 The developed recommendation system successfully generates personalized book recommendations using a hybrid recommendation approach. The application combines content-based similarity with memory based collaborative filtering to improve recommendation relevance and diversity.
 
 
+![result1](docs/screenshots/signup_login.png)
+
+![Result2](docs/screenshots/recommendations.png)
+
+![Result3](docs/screenshots/shelves.png)
+
+![Result4](docs/screenshots/result.png)
 
 
 
-
-
-
-
-
-
-
-
-
-
-## Future Enhancements
-
-- Real-time recommendation updates
-- Mobile application support
-- Cloud deployment
-- Improved personalization using additional user interactions
-- Larger and more frequently updated datasets
-
-
-## Author
+## 🖋️ Author
 **Fathima Fadeela H**
