@@ -13,16 +13,9 @@ with open("models/tfidf_matrix.pkl", "rb") as f:
 
 with open("models/book_indices.pkl", "rb") as f:
     indices = pickle.load(f)
-try:
-    with open("models/svd_model.pkl", "rb") as f:
-        svd_model = pickle.load(f) #NOT USED.
 
     books_cf = pd.read_csv("models/books_cf.csv")
     ratings = pd.read_csv("models/ratings_cf.csv")
-
-except Exception:
-    svd_model = None
-    books_cf = None
 
 EXCLUDE_PATTERNS = (
     r"box set|boxed set|collection|complete collection|"
