@@ -1,4 +1,3 @@
-##User Manual
 
 # 1. Introduction
 
@@ -7,12 +6,12 @@ BookMate is an AI-powered book recommendation system that was developed to help 
 
 # 2. System Requirements
 
-## Hardware
+Hardware
 
 - Computer or Laptop
 - Minimum 4 GB RAM
 
-## Software
+ Software
 
 - Windows 10/11
 - Python 3.x
