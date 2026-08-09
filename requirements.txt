@@ -3,7 +3,6 @@ pandas==3.0.5
 numpy==2.5.1
 scikit-learn==1.9.0
 scipy==1.18.0
-nltk==3.10.0
 Pillow==12.3.0
 isbnlib==3.10.14
 requests==2.34.2
