@@ -17,7 +17,7 @@ Feautures:
 - Profile Logout
 
 ## Built With:
-- Python, Streamlit, SQLite,Pandas, NumPy, Scikit-learn, NLTK
+- Python, Streamlit, SQLite,Pandas, NumPy, Scikit-learn
 - Visual Studio Code and Google Colab
 
 ## Download Model Files
