@@ -32,7 +32,7 @@ def show_home(conn):
       df = df.copy()
 
       UNWANTED_GENRES = ["erotica","bdsm","reverse harem","dark romance"]
-      UNWANTED_TITLE_WORDS = ["seduction","mistress","billionaire","alpha","sex","white hot","temptation","crashed","triology","summary","audiobooks"]
+      UNWANTED_TITLE_WORDS = ["seduction","mistress","billionaire","alpha","sex","white hot","pop up book","temptation","crashed","trilogy","c d","piano solos","sheet music","flute","summary","audiobooks","duology","the complete","complete","series"]
       df = df[
         ~df["genres"].fillna("").str.lower().str.contains(
         "|".join(UNWANTED_GENRES),
@@ -48,7 +48,7 @@ def show_home(conn):
       ]
       df = df.drop_duplicates(subset="title", keep="first")
       df = df.drop_duplicates(subset="bookId",keep="first")
-      df = (df.groupby("author", group_keys=False).head(2).reset_index(drop=True))
+      df = (df.groupby(df["author"].fillna("").str.lower().str.split().str[:3].str.join(" "), group_keys=False).head(2).reset_index(drop=True))
       return df
 
     # Randomizing Books
@@ -155,16 +155,20 @@ def show_home(conn):
         "popular"
     )
 
-    if st.button("View More", key="popular_more"):
-      st.session_state.show_popular_more = True
-
-    if st.session_state.show_popular_more:
-      display_book_grid(
-        st.session_state.popular_books_random,
-        "popular_more",
-        max_books=20,
-        start_index=20
-      )
+    if not st.session_state.show_popular_more:
+        if st.button("View More", key="popular_more"):
+            st.session_state.show_popular_more = True
+            st.rerun()
+    else:
+        display_book_grid(
+            st.session_state.popular_books_random,
+            "popular_more",
+            max_books=20,
+            start_index=20
+        )
+        if st.button("Show Less", key="popular_less"):
+            st.session_state.show_popular_more = False
+            st.rerun()
     st.divider()
     
     if "show_genre_more" not in st.session_state:
@@ -190,22 +194,34 @@ def show_home(conn):
             if g.strip()
         ]
 
-        if len(user_genres) > 0:
-            first_genre = user_genres[0]
-            if first_genre in genre_popularity:
-                display_book_grid(
-                    st.session_state[f"{first_genre}_random"],
-                    "genre"
-                )
-                if st.button("View More", key="genre_more"):
-                   st.session_state.show_genre_more = True
+        valid = [g for g in user_genres[:3] if g in genre_popularity]
 
-                if st.session_state.show_genre_more:
-                   display_book_grid(
-                       st.session_state[f"{first_genre}_random"],
-                       "genre_more",
-                        max_books=20,
-                        start_index=20
-                    )
+        if valid:
+            mix_key = "genre_mix_" + "_".join(valid)
+            if mix_key not in st.session_state:
+                frames = [
+                    st.session_state[f"{g}_random"].head(12).reset_index(drop=True)
+                    for g in valid
+                ]
+                st.session_state[mix_key] = (
+                    pd.concat(frames, keys=range(len(frames)))
+                      .swaplevel().sort_index(level=0)
+                      .reset_index(drop=True)
+                      .drop_duplicates(subset="bookId")
+                )
+
+            mixed = st.session_state[mix_key]
+            st.caption(" • ".join(valid))
+            display_book_grid(mixed, "genre", max_books=12)
+
+            if not st.session_state.show_genre_more:
+                if st.button("View More", key="genre_more"):
+                    st.session_state.show_genre_more = True
+                    st.rerun()
+            else:
+                display_book_grid(mixed, "genre_more", max_books=12, start_index=12)
+                if st.button("Show Less", key="genre_less"):
+                    st.session_state.show_genre_more = False
+                    st.rerun()
     else:
         st.info("Complete your preferences to receive genre recommendations." )
