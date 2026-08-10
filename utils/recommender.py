@@ -23,7 +23,7 @@ EXCLUDE_PATTERNS = (
     r"guide|study guide|summary|analysis|"
     r"illustrated|calendar|journal|"
     r"workbook|coloring|encyclopedia|"
-    r"companion guide|notes"
+    r"companion guide|notes|complete|triology|duology|series set|the complete|"
 )
 
 # CLEAN AUTHOR FUNCTION
@@ -112,7 +112,7 @@ def filter_recommendations(candidate_indices,selected_books=None,top_n=10):
 
         title = str(row["display_title"])
 
-        UNWANTED_TITLE_WORDS = ["seduction","mistress","billionaire","alpha","sex","white hot","temptation","crashed","triology","set" ]
+        UNWANTED_TITLE_WORDS = ["seduction","mistress","billionaire","alpha","sex","white hot","temptation","crashed","triology","set","duology","the complete","part" ]
 
         if any(word in title.lower() for word in UNWANTED_TITLE_WORDS):
           continue
@@ -423,10 +423,15 @@ def hybrid_recommendations(
         return recommendations
 
     recommendations = recommendations.drop_duplicates(subset="bookId")
-    print("After duplicate removal:", len(recommendations))
-    
     recommendations = recommendations[~recommendations["bookId"].isin(selected_ids)]
-    recommendations = recommendations.reset_index(drop=True)
+    half = top_n // 2
+    cf_part = recommendations[
+        recommendations["recommendation_type"] == "Collaborative"
+    ].head(half)
+    cb_part = recommendations[
+        recommendations["recommendation_type"] == "Content"
+    ].head(top_n - len(cf_part))
 
-    print("Final recommendations:", len(recommendations.head(top_n)))
-    return recommendations.head(top_n)
+    picked = pd.concat([cf_part, cb_part])
+    picked = picked.drop_duplicates(subset="bookId").reset_index(drop=True)
+    return picked.head(top_n)
